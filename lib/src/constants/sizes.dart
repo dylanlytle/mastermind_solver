@@ -1,2 +1,2 @@
-const guessCircleDiameterPixels = 20.0;
-const guessCirdlePadding = 5.0;
+const guessCircleDiameterPixels = 15.0;
+const guessCirclePadding = 8.0;

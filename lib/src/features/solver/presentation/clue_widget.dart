@@ -4,22 +4,30 @@ import 'package:mastermind_solver/src/features/solver/domain/clue.dart';
 import 'package:mastermind_solver/src/features/solver/presentation/clue_circle_widget.dart';
 
 class ClueWidget extends ConsumerWidget {
-  const ClueWidget({super.key, this.clue});
+  const ClueWidget({super.key, this.clue, required this.guessIndex, required this.onCluePegTap});
   final Clue? clue;
+  final int guessIndex;
+  final void Function(int, int)? onCluePegTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(children: [
       Row(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClueCircleWidget(
-              color: clue?.getColorForState(0),
+              color: clue?.getColorForPeg(0),
+              guessIndex: guessIndex,
+              clueIndex: 0,
+              onCluePegTap: onCluePegTap,
             ),
             ClueCircleWidget(
-              color: clue?.getColorForState(1),
+              color: clue?.getColorForPeg(1),
+              guessIndex: guessIndex,
+              clueIndex: 1,
+              onCluePegTap: onCluePegTap,
             ),
           ]),
       Row(
@@ -28,10 +36,16 @@ class ClueWidget extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClueCircleWidget(
-              color: clue?.getColorForState(2),
+              color: clue?.getColorForPeg(2),
+              guessIndex: guessIndex,
+              clueIndex: 2,
+              onCluePegTap: onCluePegTap,
             ),
             ClueCircleWidget(
-              color: clue?.getColorForState(3),
+              color: clue?.getColorForPeg(3),
+              guessIndex: guessIndex,
+              clueIndex: 3,
+              onCluePegTap: onCluePegTap,
             ),
           ]),
     ]);

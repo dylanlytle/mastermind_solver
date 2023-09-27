@@ -6,8 +6,12 @@ import 'package:mastermind_solver/src/features/solver/presentation/clue_widget.d
 import 'package:mastermind_solver/src/features/solver/presentation/guess_circle.dart';
 
 class GuessCard extends ConsumerWidget {
-  const GuessCard({super.key, this.guess});
-  final Guess? guess;
+  GuessCard({super.key, this.guess, required this.guessIndex, this.onGuessPegTap, this.onCluePegTap, this.onRemoveGuess});
+  Guess? guess;
+  int guessIndex;
+  void Function(int, int)? onGuessPegTap;
+  void Function(int, int)? onCluePegTap;
+  void Function(int)? onRemoveGuess;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,18 +23,31 @@ class GuessCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GuessCircle(
-              color: guess?.getColorForState(0),
+              color: guess?.getColorForPeg(0),
+              guessIndex: guessIndex,
+              pegIndex: 0,
+              onGuessPegTap: onGuessPegTap!,
             ),
             GuessCircle(
-              color: guess?.getColorForState(1),
+              color: guess?.getColorForPeg(1),
+              guessIndex: guessIndex,
+              pegIndex: 1,
+              onGuessPegTap: onGuessPegTap!,
             ),
             GuessCircle(
-              color: guess?.getColorForState(2),
+              color: guess?.getColorForPeg(2),
+              guessIndex: guessIndex,
+              pegIndex: 2,
+              onGuessPegTap: onGuessPegTap!,
             ),
             GuessCircle(
-              color: guess?.getColorForState(3),
+              color: guess?.getColorForPeg(3),
+              guessIndex: guessIndex,
+              pegIndex: 3,
+              onGuessPegTap: onGuessPegTap!,
             ),
-            ClueWidget(clue: guess?.getClue()),
+            ClueWidget(clue: guess?.getClue(), guessIndex: guessIndex, onCluePegTap: onCluePegTap),
+            
           ]),
     );
   }

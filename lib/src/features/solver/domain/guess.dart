@@ -1,53 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:mastermind_solver/src/constants/colors.dart';
 import 'package:mastermind_solver/src/features/solver/domain/clue.dart';
-
-enum GuessState {
-  notSelected,
-  color1,
-  color2,
-  color3,
-  color4,
-  color5,
-  color6,
-}
+import 'package:mastermind_solver/src/features/solver/domain/peg.dart';
+import 'package:mastermind_solver/src/features/solver/domain/solution.dart';
 
 class Guess {
-  List<GuessState> states = [
-    GuessState.notSelected,
-    GuessState.notSelected,
-    GuessState.notSelected,
-    GuessState.notSelected,
+  List<PegState> pegs = [
+    PegState.notSelected,
+    PegState.notSelected,
+    PegState.notSelected,
+    PegState.notSelected,
   ];
   Clue clue = Clue();
 
-  Map<GuessState, Color> guessColorMap = {
-    GuessState.notSelected: grey,
-    GuessState.color1: red,
-    GuessState.color2: blue,
-    GuessState.color3: green,
-    GuessState.color4: white,
-    GuessState.color5: black,
-    GuessState.color6: yellow,
-  };
-
-  Guess(
-      {this.states = const [
-        GuessState.notSelected,
-        GuessState.notSelected,
-        GuessState.notSelected,
-        GuessState.notSelected,
-      ]});
+  Guess();
 
   void setClue(Clue clue) {
     this.clue = clue;
   }
 
-  Clue? getClue() {
+  Clue getClue() {
     return clue;
   }
 
-  Color? getColorForState(int stateIndex) {
-    return guessColorMap[states[stateIndex]];
+  Clue getClueFromSolution(Solution solution) {
+    List<int> rightColorRightSpots = [];
+    for (var guessPegIndex = 0; guessPegIndex < pegCount; guessPegIndex++) {
+      if (pegs[guessPegIndex] == solution.pegs[guessPegIndex]) {
+        rightColorRightSpots.add(guessPegIndex);
+      }
+    }
+    int rightColorCount = 0;
+    for (var guessPegIndex = 0; guessPegIndex < pegCount; guessPegIndex++) {
+      for (var solutionPegIndex = 0; solutionPegIndex < pegCount; solutionPegIndex++) {
+        // Don't check the spots that were already identified as right color and right spot
+        if (!rightColorRightSpots.contains(guessPegIndex) && !rightColorRightSpots.contains(solutionPegIndex)) {
+          if (pegs[guessPegIndex] == solution.pegs[solutionPegIndex]) {
+            rightColorCount++;
+            break;
+          }
+        }
+      }
+    }
+    return Clue.fromCounts(rightColorRightSpots.length, rightColorCount);
+  }
+
+  void cycleGuessPeg(int pegIndex) {
+    try {
+      pegs[pegIndex] = PegState.values[pegs[pegIndex].index + 1];
+    } on RangeError {
+      pegs[pegIndex] = PegState.values[0];
+    }
+  }
+
+  void cycleCluePeg(int pegIndex) {
+    clue.cyclePeg(pegIndex);
+  }
+
+  Color? getColorForPeg(int pegIndex) {
+    return pegColorMap[pegs[pegIndex]];
   }
 }
