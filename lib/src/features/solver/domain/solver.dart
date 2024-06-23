@@ -17,15 +17,23 @@ class Solver {
               if (peg2 != PegState.notSelected) {
                 for (var peg3 in PegState.values) {
                   if (peg3 != PegState.notSelected) {
-                    Solution solution = Solution(List<PegState>.of([peg0,peg1,peg2,peg3]));
+                    Solution solution =
+                        Solution(List<PegState>.of([peg0, peg1, peg2, peg3]));
                     bool validSolution = true;
-                    if(onlyOneOfEachColor) {
-                      if (peg0 == peg1 || peg0 == peg2 || peg0 == peg3 || peg1 == peg2 || peg1 == peg3 || peg2 == peg3) {
+                    if (onlyOneOfEachColor) {
+                      if (peg0 == peg1 ||
+                          peg0 == peg2 ||
+                          peg0 == peg3 ||
+                          peg1 == peg2 ||
+                          peg1 == peg3 ||
+                          peg2 == peg3) {
                         validSolution = false;
                       }
                     }
                     for (var guess in guesses) {
-                      if (!guess.getClue().equals(guess.getClueFromSolution(solution))) {
+                      if (!guess
+                          .getClue()
+                          .equals(guess.getClueFromSolution(solution))) {
                         validSolution = false;
                       }
                     }
@@ -40,6 +48,7 @@ class Solver {
         }
       }
     }
+    solutions.shuffle();
     return solutions;
   }
 
@@ -61,5 +70,9 @@ class Solver {
 
   bool getOnlyOneOfEachColor() {
     return onlyOneOfEachColor;
+  }
+
+  void addGuessPegs(Guess guess) {
+    guesses.add(guess);
   }
 }

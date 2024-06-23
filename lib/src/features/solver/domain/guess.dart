@@ -4,7 +4,7 @@ import 'package:mastermind_solver/src/features/solver/domain/peg.dart';
 import 'package:mastermind_solver/src/features/solver/domain/solution.dart';
 
 class Guess {
-  List<PegState> pegs = [
+  List<PegState> _pegs = [
     PegState.notSelected,
     PegState.notSelected,
     PegState.notSelected,
@@ -13,6 +13,10 @@ class Guess {
   Clue clue = Clue();
 
   Guess();
+
+  Guess.guessFromPegs(List<PegState> pegs) {
+    _pegs = pegs;
+  }
 
   void setClue(Clue clue) {
     this.clue = clue;
@@ -25,16 +29,19 @@ class Guess {
   Clue getClueFromSolution(Solution solution) {
     List<int> rightColorRightSpots = [];
     for (var guessPegIndex = 0; guessPegIndex < pegCount; guessPegIndex++) {
-      if (pegs[guessPegIndex] == solution.pegs[guessPegIndex]) {
+      if (_pegs[guessPegIndex] == solution.pegs[guessPegIndex]) {
         rightColorRightSpots.add(guessPegIndex);
       }
     }
     int rightColorCount = 0;
     for (var guessPegIndex = 0; guessPegIndex < pegCount; guessPegIndex++) {
-      for (var solutionPegIndex = 0; solutionPegIndex < pegCount; solutionPegIndex++) {
+      for (var solutionPegIndex = 0;
+          solutionPegIndex < pegCount;
+          solutionPegIndex++) {
         // Don't check the spots that were already identified as right color and right spot
-        if (!rightColorRightSpots.contains(guessPegIndex) && !rightColorRightSpots.contains(solutionPegIndex)) {
-          if (pegs[guessPegIndex] == solution.pegs[solutionPegIndex]) {
+        if (!rightColorRightSpots.contains(guessPegIndex) &&
+            !rightColorRightSpots.contains(solutionPegIndex)) {
+          if (_pegs[guessPegIndex] == solution.pegs[solutionPegIndex]) {
             rightColorCount++;
             break;
           }
@@ -46,9 +53,9 @@ class Guess {
 
   void cycleGuessPeg(int pegIndex) {
     try {
-      pegs[pegIndex] = PegState.values[pegs[pegIndex].index + 1];
+      _pegs[pegIndex] = PegState.values[_pegs[pegIndex].index + 1];
     } on RangeError {
-      pegs[pegIndex] = PegState.values[0];
+      _pegs[pegIndex] = PegState.values[0];
     }
   }
 
@@ -57,6 +64,6 @@ class Guess {
   }
 
   Color? getColorForPeg(int pegIndex) {
-    return pegColorMap[pegs[pegIndex]];
+    return pegColorMap[_pegs[pegIndex]];
   }
 }

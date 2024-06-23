@@ -24,7 +24,7 @@ class Clue {
 
   Clue();
 
-  Clue.fromCounts(int rightColorRightSpotCount, int rightColorCount){
+  Clue.fromCounts(int rightColorRightSpotCount, int rightColorCount) {
     int clueIndex = 0;
     for (var i = 0; i < rightColorRightSpotCount; i++) {
       clues[clueIndex++] = ClueState.rightColorRightSpot;
@@ -35,8 +35,9 @@ class Clue {
   }
 
   bool equals(Clue clue) {
-    return ((getRightColorRightSpotCount() == clue.getRightColorRightSpotCount()) &&
-            (getRightColorCount()          == clue.getRightColorCount()));
+    return ((getRightColorRightSpotCount() ==
+            clue.getRightColorRightSpotCount()) &&
+        (getRightColorCount() == clue.getRightColorCount()));
   }
 
   int getRightColorRightSpotCount() {
@@ -52,7 +53,7 @@ class Clue {
   int getRightColorCount() {
     int rightColorRightSpotCount = 0;
     for (var i = 0; i < pegCount; i++) {
-      if (clues[i] == ClueState.rightColorRightSpot) {
+      if (clues[i] == ClueState.rightColor) {
         rightColorRightSpotCount++;
       }
     }
